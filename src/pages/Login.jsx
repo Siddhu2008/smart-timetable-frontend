@@ -1,6 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, Chip, Divider, TextField, Typography } from "@mui/material";
-import { CheckCircle as CheckIcon } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment
+} from "@mui/material";
+import { CheckCircle as CheckIcon, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import LoadingOverlay from "../components/LoadingOverlay.jsx";
@@ -8,6 +19,7 @@ import LoadingOverlay from "../components/LoadingOverlay.jsx";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const { login, loading, token } = useAuth();
   const navigate = useNavigate();
@@ -96,9 +108,22 @@ const Login = () => {
             />
             <TextField
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
               fullWidth
               margin="normal"
               required
